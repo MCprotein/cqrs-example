@@ -1,0 +1,43 @@
+services:
+  db1:
+    image: mysql:8.0
+    ports:
+      - '3307:3306'
+    restart: always
+    container_name: basic-db
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DATABASE: study
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_INITDB_CHARSET: utf8mb4
+      MYSQL_INITDB_COLLATION: utf8mb4_unicode_ci
+    # volumes:
+    #   - ./mysql:/var/lib/mysql:rw
+    # tmpfs:
+    #   - /var/lib/mysql:rw
+  db2:
+    image: mysql:8.0
+    ports:
+      - '3308:3306'
+    restart: always
+    container_name: basic-shadow
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DATABASE: study
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_INITDB_CHARSET: utf8mb4
+      MYSQL_INITDB_COLLATION: utf8mb4_unicode_ci
+    # volumes:
+    #   - ./mysql2:/var/lib/mysql:rw
+    # tmpfs:
+    #   - /var/lib/mysql:rw
+volumes:
+  basic:

@@ -10,12 +10,13 @@ export class PostController {
   @Post()
   async createPost(@Body() body: { title: string; content: string }) {
     const { title, content } = body
-    const command = new CreatePostCommand(title, content)
+    const userId = 'user'
+    const command = new CreatePostCommand(userId, title, content)
     return await this.commandBus.execute(command)
   }
 
   @Get(':id')
-  async getPost(@Param('id') id: number) {
+  async getPost(@Param('id') id: string) {
     const query = new GetPostQuery(id)
     return await this.queryBus.execute(query)
   }
