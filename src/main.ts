@@ -2,12 +2,15 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { Transport } from '@nestjs/microservices'
+import { PrismaService } from 'prisma/prisma.service'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const configService = app.get<ConfigService>(ConfigService)
   const port = configService.getOrThrow('PORT')
+  const prismaService = app.get(PrismaService)
+  await prismaService.enableShutdownHooks(app)
 
   const kafkaBroker1 = configService.getOrThrow('KAFKA_BROKER_1')
   const kafkaBroker2 = configService.getOrThrow('KAFKA_BROKER_2')

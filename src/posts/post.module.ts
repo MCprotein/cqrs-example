@@ -12,7 +12,6 @@ import { PostRepositoryMysql } from './post.repository.port'
   providers: [
     CreatePostHandler,
     GetPostHandler,
-    PostRepository,
     { provide: PostRepositoryMysql, useClass: PostRepository }
   ]
 })

@@ -1,7 +1,9 @@
 import { PrismaService } from 'prisma/prisma.service'
 import { PostRepositoryPort } from './post.repository.port'
 import { CreatePostDto, PostDto, UpdatePostDto } from './post.dto'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class PostRepository implements PostRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
