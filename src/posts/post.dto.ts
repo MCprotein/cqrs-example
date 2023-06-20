@@ -17,3 +17,10 @@ export class CreatePostDto {
   userId: string
   createdAt: Date
 }
+
+export class UpdatePostDto {
+  content: string
+  title: string
+  userId: string
+  updatedAt: Date
+}
