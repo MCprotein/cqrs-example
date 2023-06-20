@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { PostModule } from './posts/post.module'
 import { PrismaModule } from 'prisma/prisma.module'
+import { UserModule } from './users/user.module'
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PrismaModule } from 'prisma/prisma.module'
       }
     ]),
     PrismaModule,
+    UserModule,
     PostModule
   ],
   controllers: [AppController],
