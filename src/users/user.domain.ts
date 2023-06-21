@@ -41,6 +41,22 @@ export class User extends AggregateRoot implements IUser {
     Object.assign(this, user)
   }
 
+  static of(user: {
+    username: string
+    password: string
+    name: string
+    nickname: string
+    email: string
+  }): User {
+    return new User({
+      username,
+      password,
+      name,
+      nickname,
+      email
+    })
+  }
+
   get getUser(): IUserProperties {
     return {
       id: this.id,
