@@ -106,6 +106,9 @@ export class User extends AggregateRoot implements IUser {
   get getIsApproved(): string {
     return this.isApproved
   }
+  set setUserId(id: string) {
+    this.id = id
+  }
   set setCreatedAt(createdAt: Date) {
     this.createdAt = createdAt
   }
