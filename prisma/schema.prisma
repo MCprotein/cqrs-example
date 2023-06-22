@@ -21,9 +21,14 @@ model User {
   name String @db.VarChar(255)
   nickname String @db.VarChar(255)
   email String @db.VarChar(255)
-  isApproved String @db.VarChar(10)
+  isApproved isApproved
 
   posts Post[]
+}
+
+enum isApproved {
+  Y
+  N
 }
 
 model Post {

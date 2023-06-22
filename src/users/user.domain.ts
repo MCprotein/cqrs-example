@@ -1,24 +1,35 @@
 import { AggregateRoot } from '@nestjs/cqrs'
 
-export interface IUserProperties {
-  id: string
+export type IsApprovedType = 'Y' | 'N'
+export interface ICreateUserProperties {
   username: string
   password: string
   name: string
   nickname: string
   email: string
-  isApproved: string
-  createdAt?: Date
+}
+export interface IUserProperties {
+  id?: string
+  username: string
+  password: string
+  name: string
+  nickname: string
+  email: string
+  isApproved: IsApprovedType
+  createdAt: Date
   updatedAt?: Date
   deletedAt?: Date
 }
 
 export interface IUser {
+  get getUserId(): string
+  get getCreateUser(): Omit<IUserProperties, 'id' | 'updatedAt' | 'deletedAt'>
   get getUser(): IUserProperties
   get getCreatedAt(): Date
   get getUpdatedAt(): Date
   get getDeletedAt(): Date
   get getIsApproved(): string
+  set setUserId(id: string)
   set setCreatedAt(date: Date)
   set setUpdatedAt(date: Date)
   set setDeletedAt(date: Date)
@@ -26,14 +37,14 @@ export interface IUser {
 }
 
 export class User extends AggregateRoot implements IUser {
-  private id: string
+  private id?: string
   private username: string
   private password: string
   private name: string
   private nickname: string
   private email: string
-  private isApproved: string
-  private createdAt?: Date
+  private isApproved: IsApprovedType
+  private createdAt: Date
   private updatedAt?: Date
   private deletedAt?: Date
   constructor(user: IUserProperties) {
@@ -41,20 +52,32 @@ export class User extends AggregateRoot implements IUser {
     Object.assign(this, user)
   }
 
-  static of(user: {
-    username: string
-    password: string
-    name: string
-    nickname: string
-    email: string
-  }): User {
+  static create({ username, password, name, nickname, email }: ICreateUserProperties): User {
     return new User({
       username,
       password,
       name,
       nickname,
-      email
+      email,
+      isApproved: 'N',
+      createdAt: new Date()
     })
+  }
+
+  get getUserId(): string {
+    return this.id
+  }
+
+  get getCreateUser(): Omit<IUserProperties, 'id' | 'updatedAt' | 'deletedAt'> {
+    return {
+      username: this.username,
+      password: this.password,
+      name: this.name,
+      nickname: this.nickname,
+      email: this.email,
+      isApproved: this.isApproved,
+      createdAt: this.createdAt
+    }
   }
 
   get getUser(): IUserProperties {
@@ -92,7 +115,7 @@ export class User extends AggregateRoot implements IUser {
   set setDeletedAt(deletedAt: Date) {
     this.deletedAt = deletedAt
   }
-  set setIsApproved(isApproved: string) {
+  set setIsApproved(isApproved: IsApprovedType) {
     this.isApproved = isApproved
   }
 }

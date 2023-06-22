@@ -1,3 +1,5 @@
+import { IsApprovedType } from './user.domain'
+
 export class BaseDto {
   createdAt: Date
   updatedAt: Date
@@ -11,7 +13,7 @@ export class UserDto extends BaseDto {
   name: string
   nickname: string
   email: string
-  isApproved: string
+  isApproved: IsApprovedType
 }
 
 export class CreateUserControllerDto {
@@ -29,5 +31,5 @@ export class CreateUserHandlerDto {
   nickname: string
   email: string
   createdAt: Date
-  isApproved: string
+  isApproved: IsApprovedType
 }
