@@ -1,4 +1,4 @@
-import { CreateUserHandlerDto } from './user.dto'
+import { CreateUserHandlerDto } from '../../dto/user.dto'
 
 export interface UserRepositoryPort {
   createOne(user: CreateUserHandlerDto): void

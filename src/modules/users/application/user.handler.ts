@@ -1,8 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { CreateUserCommand } from './user.command'
-import { UserRepositoryMysql, UserRepositoryPort } from './user.repository.port'
+import {
+  UserRepositoryMysql,
+  UserRepositoryPort
+} from '../infrastructure/repository/user.repository.port'
 import { Inject } from '@nestjs/common'
-import { User } from './user.domain'
+import { User } from '../domain/user.domain'
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {

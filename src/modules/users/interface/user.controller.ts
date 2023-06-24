@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { EventBus } from '@nestjs/cqrs'
-import { CreateUserEvent } from './user.event'
-import { CreateUserControllerDto } from './user.dto'
+import { CreateUserEvent } from '../application/user.event'
+import { CreateUserControllerDto } from '../dto/user.dto'
 
 @Controller('users')
 export class UserController {

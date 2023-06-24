@@ -1,4 +1,4 @@
-import { IsApprovedType } from './user.domain'
+import { IsApprovedType } from '../domain/user.domain'
 
 export class BaseDto {
   createdAt: Date
