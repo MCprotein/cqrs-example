@@ -2,13 +2,12 @@ import { Module, Provider } from '@nestjs/common'
 import { SignUpCHandler } from './application/command/signup.handler'
 import { CqrsModule } from '@nestjs/cqrs'
 import { AuthController } from './interface/auth.controller'
-import { UserRepository } from '../users/infrastructure/repository/user.repository'
-import { UserModule } from '../users/user.module'
 import { PrismaModule } from 'prisma/prisma.module'
 import { AuthSaga } from './application/saga/auth.saga'
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt'
-import { ConfigService } from '@nestjs/config'
-import { UserRepositoryMysql } from './infrastructure/repository/user.repository.port'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { AuthRepositoryMysql } from './infrastructure/repository/auth.repository.port'
+import { AuthRepository } from './infrastructure/repository/auth.repository'
 
 const Sagas: Provider[] = [AuthSaga]
 
@@ -16,11 +15,13 @@ const Handlers: Provider[] = [SignUpCHandler]
 
 @Module({
   imports: [
+    ConfigModule,
     CqrsModule,
-    UserModule,
     PrismaModule,
     JwtModule.registerAsync({
       global: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService): JwtModuleOptions => {
         return {
           secret: configService.get('JWT_SECRET'),
@@ -30,7 +31,7 @@ const Handlers: Provider[] = [SignUpCHandler]
     })
   ],
   controllers: [AuthController],
-  providers: [{ provide: UserRepositoryMysql, useClass: UserRepository }, ...Sagas, ...Handlers],
+  providers: [{ provide: AuthRepositoryMysql, useClass: AuthRepository }, ...Sagas, ...Handlers],
   exports: []
 })
 export class AuthModule {}

@@ -23,3 +23,13 @@ export class UserDto extends BaseDto {
   email: string
   isApproved: 'Y' | 'N'
 }
+
+export class CreateUserRepositoryDto {
+  username: string
+  password: string
+  name: string
+  nickname: string
+  email: string
+  createdAt: Date
+  isApproved: 'Y' | 'N'
+}

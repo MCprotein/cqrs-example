@@ -1,13 +1,16 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs'
 import { SignUpCommand } from './signup.command'
 import { Inject } from '@nestjs/common'
-import { UserRepositoryMysql, UserRepositoryPort } from '../../infrastructure/user.repository.port'
+import {
+  AuthRepositoryMysql,
+  AuthRepositoryPort
+} from '../../infrastructure/repository/auth.repository.port'
 import { Auth } from '../../domain/auth.domain'
 
 @CommandHandler(SignUpCommand)
 export class SignUpCHandler implements ICommandHandler<SignUpCommand> {
   constructor(
-    @Inject(UserRepositoryMysql) private readonly userRepository: UserRepositoryPort,
+    @Inject(AuthRepositoryMysql) private readonly userRepository: AuthRepositoryPort,
     private readonly eventPublisher: EventPublisher
   ) {}
   async execute(command: SignUpCommand): Promise<void> {
