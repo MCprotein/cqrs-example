@@ -9,6 +9,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { PostModule } from './posts/post.module'
 import { PrismaModule } from 'prisma/prisma.module'
 import { UserModule } from './modules/users/user.module'
+import { AuthModule } from './modules/auth/auth.module'
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { UserModule } from './modules/users/user.module'
     ]),
     PrismaModule,
     UserModule,
-    PostModule
+    PostModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [OrderHandler, OrderSaga, ItemRepository]
