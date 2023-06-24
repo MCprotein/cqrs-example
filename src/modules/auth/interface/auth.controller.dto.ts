@@ -14,12 +14,17 @@ export class BaseDto {
 //   isApproved: IsApprovedType
 // }
 
-export class CreateUserControllerDto {
+export class SignUpControllerDto {
   username: string
   password: string
   name: string
   nickname: string
   email: string
+}
+
+export class SignInControllerDto {
+  email: string
+  password: string
 }
 
 // export class CreateUserHandlerDto {

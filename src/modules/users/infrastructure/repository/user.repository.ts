@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'prisma/prisma.service'
 import { UserRepositoryPort } from './user.repository.port'
-import { CreateUserHandlerDto } from '../../dto/user.dto'
+import { CreateUserHandlerDto, UserDto } from '../../dto/user.dto'
 
 @Injectable()
 export class UserRepository implements UserRepositoryPort {
@@ -9,5 +9,9 @@ export class UserRepository implements UserRepositoryPort {
 
   async createOne(data: CreateUserHandlerDto): Promise<void> {
     await this.prisma.user.create({ data })
+  }
+
+  async findOneByEmail(email: string): Promise<UserDto> {
+    return await this.prisma.user.findUniqueOrThrow({ where: { email } })
   }
 }

@@ -20,7 +20,7 @@ model User {
   password String @db.VarChar(255)
   name String @db.VarChar(255)
   nickname String @db.VarChar(255)
-  email String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
   isApproved isApproved
 
   posts Post[]
