@@ -1,22 +1,16 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-local'
-import {
-  AuthRepositoryMysql,
-  AuthRepositoryPort
-} from '../../infrastructure/repository/auth.repository.port'
+import { QueryBus } from '@nestjs/cqrs'
+import { SignInQuery } from '../query/signin.query'
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(@Inject(AuthRepositoryMysql) private readonly authRepository: AuthRepositoryPort) {
+  constructor(private readonly queryBus: QueryBus) {
     super({ usernameField: 'email' })
   }
 
   async validate(email: string, password: string): Promise<any> {
-    const user = await this.authRepository.findOneByEmail(email)
-    if (user?.password !== password) {
-      throw new UnauthorizedException()
-    }
-    return user
+    return await this.queryBus.execute(new SignInQuery(email, password))
   }
 }
