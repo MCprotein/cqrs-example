@@ -8,6 +8,7 @@ import { JwtModule, JwtModuleOptions } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AuthRepositoryMysql } from './infrastructure/repository/auth.repository.port'
 import { AuthRepository } from './infrastructure/repository/auth.repository'
+import { LocalStrategy } from './application/strategy/local.strategy'
 
 const Sagas: Provider[] = [AuthSaga]
 
@@ -28,7 +29,8 @@ const Handlers: Provider[] = [SignUpCHandler]
           signOptions: { expiresIn: '2h' }
         }
       }
-    })
+    }),
+    LocalStrategy
   ],
   controllers: [AuthController],
   providers: [{ provide: AuthRepositoryMysql, useClass: AuthRepository }, ...Sagas, ...Handlers],

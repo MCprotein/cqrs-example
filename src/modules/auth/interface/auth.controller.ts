@@ -1,8 +1,9 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common'
 import { CommandBus, EventBus } from '@nestjs/cqrs'
 import { SignUpControllerDto, SignInControllerDto } from './auth.controller.dto'
 import { SignUpEvent } from '../application/event/signup.event'
 import { SignInCommand } from '../application/command/signin.command'
+import { LocalAuthGuard } from '../guards/local-auth.guard'
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +19,7 @@ export class AuthController {
     return { result: 'success' }
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() body: SignInControllerDto) {
