@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-local'
 import { QueryBus } from '@nestjs/cqrs'
-import { SignInQuery } from '../query/signin.query'
+import { LocalStrategyQuery } from '../query/local-strategy.query'
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -11,6 +11,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(email: string, password: string): Promise<any> {
-    return await this.queryBus.execute(new SignInQuery(email, password))
+    const user = await this.queryBus.execute(new LocalStrategyQuery(email, password))
+    if (!user) {
+      throw new UnauthorizedException()
+    }
+    return user
   }
 }
+
+// TODO: https://docs.nestjs.com/recipes/passport#extending-guards

@@ -25,7 +25,7 @@ export class AuthController {
     return { result: 'success' }
   }
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   // async signin(@Body() body: SignInControllerDto) {
