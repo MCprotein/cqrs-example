@@ -29,8 +29,7 @@ const Handlers: Provider[] = [SignUpCHandler]
           signOptions: { expiresIn: '2h' }
         }
       }
-    }),
-    LocalStrategy
+    })
   ],
   controllers: [AuthController],
   providers: [{ provide: AuthRepositoryMysql, useClass: AuthRepository }, ...Sagas, ...Handlers],

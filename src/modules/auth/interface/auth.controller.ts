@@ -1,11 +1,26 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+  UseGuards
+} from '@nestjs/common'
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs'
-import { SignUpControllerDto, SignInControllerDto } from './auth.controller.dto'
+import { SignUpControllerDto } from './auth.controller.dto'
 import { SignUpEvent } from '../application/event/signup.event'
-import { SignInCommand } from '../application/command/signin.command'
 import { LocalAuthGuard } from '../guards/local-auth.guard'
 import { SignInQuery } from '../application/query/signin.query'
-import { Request } from 'express'
+import { Request as ExpressRequest } from 'express'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
+
+interface IRequestIncludeUser extends ExpressRequest {
+  user: {
+    email: string
+  }
+}
 
 @Controller('auth')
 export class AuthController {
@@ -25,16 +40,16 @@ export class AuthController {
     return { result: 'success' }
   }
 
-  // @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  // async signin(@Body() body: SignInControllerDto) {
-  // const { email, password } = body
-  // const result = await this.commandBus.execute(new SignInCommand(email, password))
+  async signin(@Request() req: IRequestIncludeUser) {
+    return await this.queryBus.execute(new SignInQuery(req.user.email))
+  }
 
-  // return { result }
-  // }
-  async signin(@Request() req: Request) {
-    return await this.queryBus.execute(new SignInQuery())
+  @UseGuards(JwtAuthGuard)
+  @Get('test')
+  test(@Request() req) {
+    return req.user
   }
 }
