@@ -8,8 +8,8 @@ import { AllExceptionFilter } from './filters/http-exception.filter'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  const { httpAdapter } = app.get(HttpAdapterHost)
-  app.useGlobalFilters(new AllExceptionFilter(httpAdapter))
+  const httpAdapterHost = app.get(HttpAdapterHost)
+  app.useGlobalFilters(new AllExceptionFilter(httpAdapterHost))
 
   const configService = app.get<ConfigService>(ConfigService)
   const port = configService.getOrThrow('PORT')
