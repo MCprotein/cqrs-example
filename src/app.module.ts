@@ -10,6 +10,9 @@ import { PostModule } from './posts/post.module'
 import { PrismaModule } from 'prisma/prisma.module'
 import { UserModule } from './modules/users/user.module'
 import { AuthModule } from './modules/auth/auth.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
+import { ChatModule } from './modules/chats/chat.module'
 
 @Module({
   imports: [
@@ -39,10 +42,14 @@ import { AuthModule } from './modules/auth/auth.module'
         }
       }
     ]),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static')
+    }),
     PrismaModule,
     UserModule,
     PostModule,
-    AuthModule
+    AuthModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [OrderHandler, OrderSaga, ItemRepository]

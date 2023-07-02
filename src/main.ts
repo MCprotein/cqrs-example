@@ -3,13 +3,18 @@ import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { Transport } from '@nestjs/microservices'
 import { PrismaService } from 'prisma/prisma.service'
-import { AllExceptionFilter } from './filters/http-exception.filter'
+import { AllHttpExceptionFilter } from './filters/http-exception.filter'
+import { AllWebsocketExceptionFilter } from './filters/websocket-exception.filter'
+import { SocketIoAdapter } from './modules/chats/chat.adapter'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
+  app.enableCors()
+
   const httpAdapterHost = app.get(HttpAdapterHost)
-  app.useGlobalFilters(new AllExceptionFilter(httpAdapterHost))
+  app.useGlobalFilters(new AllHttpExceptionFilter(httpAdapterHost))
+  app.useGlobalFilters(new AllWebsocketExceptionFilter())
 
   const configService = app.get<ConfigService>(ConfigService)
   const port = configService.getOrThrow('PORT')
@@ -33,6 +38,7 @@ async function bootstrap() {
     }
   })
 
+  app.useWebSocketAdapter(new SocketIoAdapter(app))
   await app.startAllMicroservices()
   await app.listen(port)
 }
