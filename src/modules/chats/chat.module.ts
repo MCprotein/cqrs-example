@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common'
-import { EventsGateway } from './chat.gateway'
+import { ChatGateway } from './chat.gateway'
 
 @Module({
   imports: [],
   controllers: [],
-  providers: [EventsGateway],
+  providers: [ChatGateway],
   exports: []
 })
 export class ChatModule {}
